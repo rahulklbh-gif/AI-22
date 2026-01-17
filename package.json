@@ -1,12 +1,17 @@
 {
-  "name": "text-to-video",
+  "name": "text-to-video-ai",
   "version": "1.0.0",
+  "description": "Free Text to Video Generator API for Blogger",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5"
-  }
+  },
+  "license": "MIT"
 }
