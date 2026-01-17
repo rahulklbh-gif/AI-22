@@ -1,7 +1,7 @@
 {
   "name": "text-to-video-ai",
   "version": "1.0.0",
-  "description": "Free Text to Video Generator API for Blogger",
+  "description": "Text to Video API (No Browser)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
