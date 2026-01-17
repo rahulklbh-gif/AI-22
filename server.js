@@ -1,37 +1,47 @@
 const express = require("express");
-const { exec } = require("child_process");
-const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+
+// ✅ CORS allow (VERY IMPORTANT)
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+}));
+
+// ✅ JSON body read
 app.use(express.json());
 
-if (!fs.existsSync("videos")) fs.mkdirSync("videos");
+// ✅ Test route
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
-app.post("/generate", (req, res) => {
-  const text = req.body.text;
-  if (!text) return res.json({ error: "No text" });
+// ✅ VIDEO GENERATE ROUTE
+app.post("/generate", async (req, res) => {
+  try {
+    const text = req.body.text;
 
-  const name = Date.now();
+    if (!text) {
+      return res.status(400).json({ error: "Text missing" });
+    }
 
-  const cmd = `
-ffmpeg -f lavfi -i color=c=black:s=720x1280:d=5 \
--vf "drawtext=text='${text.replace(/'/g, "")}':fontcolor=white:fontsize=48:x=(w-text_w)/2:y=(h-text_h)/2" \
-videos/${name}.mp4
-`;
-
-  exec(cmd, (err) => {
-    if (err) return res.json({ error: "FFmpeg error" });
+    // 🔥 DEMO video (test ke liye)
+    const demoVideo =
+      "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4";
 
     res.json({
       success: true,
-      video: "/videos/" + name + ".mp4"
+      videoUrl: demoVideo
     });
-  });
+
+  } catch (err) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-app.use("/videos", express.static("videos"));
-
-app.listen(3000, () => console.log("Server started"));
-
+// ✅ PORT (Render requirement)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server started on port " + PORT);
+});
