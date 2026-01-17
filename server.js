@@ -6,12 +6,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ ROOT ROUTE (VERY IMPORTANT)
+// ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("Server is running OK");
 });
 
-// ✅ POST API
+// GENERATE API
 app.post("/generate", (req, res) => {
   const text = req.body.text;
 
@@ -26,7 +26,6 @@ app.post("/generate", (req, res) => {
   });
 });
 
-// ✅ Render PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server started on port " + PORT);
